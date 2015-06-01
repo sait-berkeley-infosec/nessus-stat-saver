@@ -8,7 +8,7 @@ def main():
     session = Session()
 
     for report in nessus.reports:
-        if not report.completed:
+        if report.status != 'completed':
             continue
 
         if session.query(exists(), where(Report.uuid==report.uuid)).scalar():
@@ -28,7 +28,7 @@ def main():
                 low=host.low,
                 med=host.med,
                 high=host.high,
-                crit=host.critical
+                crit=host.critical,
                 cpe=host.cpe.replace('The remote operating system matched the following CPE\'s : \n\n  ', '')
             )
 
