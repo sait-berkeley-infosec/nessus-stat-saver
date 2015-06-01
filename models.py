@@ -43,5 +43,6 @@ class Vuln(Base):
     family = Column(String)
     severity = Column(Integer)
     plugin = Column(Integer)
+    hosts_affected = Column(Integer)
 
     report_id = Column(Integer, ForeignKey('reports.id'))

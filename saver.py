@@ -43,6 +43,7 @@ def main():
                 family=vuln.family,
                 severity=vuln.severity,
                 plugin=vuln.plugin_id,
+                hosts_affected=len(report.hosts_affected_by(vuln)),
             )
             v.report = r
             session.add(v)
