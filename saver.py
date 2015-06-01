@@ -3,6 +3,8 @@ from db import Session
 from models import Report, Host, Vuln
 from datetime import datetime
 
+from sqlalchemy.sql import exists
+
 def main():
     nessus = authenticate()
     session = Session()
@@ -11,7 +13,7 @@ def main():
         if report.status != 'completed':
             continue
 
-        if session.query(exists(), where(Report.uuid==report.uuid)).scalar():
+        if session.query(exists().where(Report.uuid==report.uuid)).scalar():
             continue
 
         r = Report(
@@ -24,11 +26,11 @@ def main():
         for host in report.hosts:
             h = Host(
                 hostname=host.hostname,
-                info=host.info,
-                low=host.low,
-                med=host.med,
-                high=host.high,
-                crit=host.critical,
+                info=host.info['count'],
+                low=host.low['count'],
+                med=host.med['count'],
+                high=host.high['count'],
+                crit=host.critical['count'],
                 cpe=host.cpe.replace('The remote operating system matched the following CPE\'s : \n\n  ', '')
             )
 
